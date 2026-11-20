@@ -127,7 +127,7 @@
 <body>
 
     <div class="navbar">
-        <h2>EduManage</h2>
+        <h2>Student Manage</h2>
     </div>
 
     <div class="container">
