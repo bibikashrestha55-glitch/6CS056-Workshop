@@ -14,13 +14,12 @@ return view('student.list', [
 ]);
 }
 
-public function show($id)
-{
-$student = Student::findOrFail($id);
-return view('student.detail', [
-'student' => $student,
-]);
-}
+public function show(Student $student)
+    {
+        return view('student.detail', [
+            'student' => $student,
+        ]);
+    }
 
 public function create()
 {
@@ -44,45 +43,41 @@ public function store(Request $request)
         ->with('success', "Student {$student->name} created successfully!");
 }
 
-public function edit($id)
-{
-    $student = Student::findOrFail($id);
+public function edit(Student $student)
+    {
+        return view('student.edit', [
+            'student' => $student,
+        ]);
+    }
 
-    return view('student.edit', [
-        'student' => $student,
-    ]);
+public function update(Request $request, Student $student)
+    {
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'email'         => [
+                'required', 'email', 'max:255',
+                Rule::unique('students')->ignore($student->id),
+            ],
+            'phone'         => 'required|string|max:20',
+            'address'       => 'nullable|string|max:500',
+            'date_of_birth' => 'nullable|date',
+        ]);
+
+        $student->update($validated);
+
+        return redirect()
+            ->route('students.show', $student)
+            ->with('success', 'Student updated successfully!');
+    }
+
+public function destroy(Student $student)
+    {
+        $student->delete();
+
+        return redirect()
+            ->route('students.index')
+            ->with('success', 'Student deleted successfully!');
+    }
 }
 
-public function update(Request $request, $id)
-{
-    $student = Student::findOrFail($id);
 
-    $validated = $request->validate([
-        'name'          => 'required|string|max:255',
-        'email'         => [
-            'required', 'email', 'max:255',
-            Rule::unique('students')->ignore($student->id),
-        ],
-        'phone'         => 'required|string|max:20',
-        'address'       => 'nullable|string|max:500',
-        'date_of_birth' => 'nullable|date',
-    ]);
-
-    $student->update($validated);
-
-    return redirect()
-        ->route('students.show', $student->id)
-        ->with('success', 'Student updated successfully!');
-}
-
-
-public function destroy($id)
-{
-    $student = Student::findOrFail($id);
-    $student->delete();
-
-    return redirect()
-        ->route('students.index')
-        ->with('success', 'Student deleted successfully!');
-}
-}
