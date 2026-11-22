@@ -15,7 +15,7 @@ return new class extends Migration
     $table->id();
 
     $table->string('name');
-    $table->text('description');
+    $table->text('description')->nullable();
     $table->integer('duration');
     $table->decimal('fee', 10, 2);
     $table->enum('difficulty', ['Easy', 'Medium', 'Hard']);

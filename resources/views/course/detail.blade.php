@@ -1,7 +1,4 @@
-@extends('layouts.app')
-@section('title', 'Course Details')
-
-@section('content')
+<x-layouts.app title="Course Details">
     <h1>Course Details</h1>
 
     <p><strong>ID:</strong> {{ $course->id }}</p>
@@ -14,4 +11,4 @@
 
     <a href="{{ route('courses.edit', $course) }}" class="btn">Edit Course</a>
     <a href="{{ route('courses.index') }}">Back to Courses</a>
-@endsection
+</x-layouts.app>
