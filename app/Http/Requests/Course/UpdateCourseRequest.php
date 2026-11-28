@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Course;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateCourseRequest extends FormRequest
 {
@@ -14,19 +13,13 @@ class UpdateCourseRequest extends FormRequest
 
     public function rules(): array
     {
-        $course = $this->route('course');
-
         return [
-            'title' => 'sometimes|required|string|max:255',
-            'code' => [
-                'sometimes',
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('courses', 'code')->ignore($course?->id),
-            ],
-            'description' => 'nullable|string|max:1000',
-            'credits' => 'nullable|integer|min:1|max:20',
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+            'duration' => 'sometimes|required|integer|min:1',
+            'fee' => 'sometimes|required|numeric|min:0',
+            'difficulty' => 'sometimes|required|in:Easy,Medium,Hard',
+            'is_active' => 'sometimes|required|boolean',
         ];
     }
 }
